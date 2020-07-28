@@ -64,8 +64,8 @@ phases:
      - ./vendor/bin/phpunit --coverage-html coverage
      - aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      - sonar-scanner
- cache:
-  paths:
+cache:
+     paths:
     # Debian package caches, so we don't need to keep redownloading debian packages:
     - /var/cache/apt/**/*
     - /var/lib/apt/lists/**/*
