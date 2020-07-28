@@ -1,8 +1,8 @@
 version: 0.2
 env:
   parameter-store:
-    SONARQUBE_TOKEN: "42497bfdcc7c491854870224bb59b275dbf565b1"
-    SONARQUBE_ENDPOINT: "https://sonarcloud.io"
+    SONARQUBE_TOKEN: "SONARQUBE_TOKEN"
+    SONARQUBE_ENDPOINT: "SONARQUBE_ENDPOINT"
 phases:
 
  install:
