@@ -1,5 +1,10 @@
 version: 0.2
+env:
+  parameter-store:
+    SONARQUBE_TOKEN: "42497bfdcc7c491854870224bb59b275dbf565b1"
+    SONARQUBE_ENDPOINT: "https://sonarcloud.io"
 phases:
+
  install:
    commands:
      #This file configures apt to remove it's cache after installs - we want this cache, so we remove this config
@@ -50,11 +55,14 @@ phases:
      # Start Mysql if you need it
      # - apt-get install -y mysql-server
      # - su mysql -s /bin/bash -c "/usr/sbin/mysqld" &
-
+       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+       - unzip sonar-scanner-cli-4.4.0.2170-linux.zip
+       - export PATH=$PATH:./sonar-scanner-cli-4.4.0.2170-linux/bin/
  build:
    commands:
      - echo Build started on `date`
      - echo Installing composer deps
+     - sonar-scanner
      - composer install --no-progress --no-suggest
 
  post_build:
