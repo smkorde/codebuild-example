@@ -7,9 +7,9 @@ phases:
 
  install:
    commands:
-     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
-     - unzip sonar-scanner-cli-4.4.0.2170-linux.zip -d $HOME/.sonar/
-     - export PATH=$PATH:$HOME/.sonar/sonar-scanner-cli-4.4.0.2170-linux/bin/
+     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+     - unzip sonar-scanner-cli-3.3.0.1492-linux.zip
+     - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
      - echo $PATH
  build:
    commands:
