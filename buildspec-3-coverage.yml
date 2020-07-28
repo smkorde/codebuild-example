@@ -61,8 +61,8 @@ phases:
      - echo Build completed on `date`
      
      # Run your tests
-     - ./vendor/bin/phpunit --coverage-html coverage
-     - aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
+     - ./vendor/bin/phpunit
+     #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      - sonar-scanner
 cache:
   paths:
