@@ -7,6 +7,10 @@ phases:
 
  install:
    commands:
+     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+     - unzip sonar-scanner-cli-4.4.0.2170-linux.zip
+     - export PATH=$PATH:./sonar-scanner-cli-4.4.0.2170-linux/bin/
+       
      #This file configures apt to remove it's cache after installs - we want this cache, so we remove this config
      - rm -f /etc/apt/apt.conf.d/docker-clean
 
@@ -54,10 +58,7 @@ phases:
 
      # Start Mysql if you need it
      # - apt-get install -y mysql-server
-     # - su mysql -s /bin/bash -c "/usr/sbin/mysqld" &
-       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
-       unzip sonar-scanner-cli-4.4.0.2170-linux.zip
-       export PATH=$PATH:./sonar-scanner-cli-4.4.0.2170-linux/bin/
+     # - su mysql -s /bin/bash -c "/usr/sbin/mysqld" &       
  build:
    commands:
      - echo Build started on `date`
