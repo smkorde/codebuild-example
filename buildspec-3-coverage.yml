@@ -63,7 +63,7 @@ phases:
      # Run your tests
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
-     - sonar-scanner
+    # - sonar-scanner
 cache:
   paths:
     # Debian package caches, so we don't need to keep redownloading debian packages:
