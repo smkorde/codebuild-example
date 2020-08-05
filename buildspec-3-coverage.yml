@@ -9,12 +9,11 @@ phases:
      - rm -f /usr/local/bin/pecl*
      - apt-get update
      - apt-get upgrade -y
-     - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug
+     - apt-get install -y php7.3.13-cli php7.3.13-zip php7.3.13-xdebug
      - phpenmod zip
      - apt-get install locate
      - updatedb
      - locate xdebug.so
-     - php -m
      - phpenmod xdebug 
      - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
      - php composer-setup.php ;
@@ -23,6 +22,7 @@ phases:
      - php --ini
      - sed '1 s/^/zend_extension = \/usr\/lib\/php\/20170718\/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
      - php -v
+     - php -m
      - composer require composer/xdebug-handler
      - composer install
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
