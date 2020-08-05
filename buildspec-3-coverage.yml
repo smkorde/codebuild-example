@@ -56,7 +56,7 @@ phases:
      - echo Build completed on `date`
      # Run your tests
      - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
-     - php -v
+     - ./vendor/bin/phpstan analyse app --level 5 --error-format=junit --no-progress > ci/quality_check.xml
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      - sonar-scanner
 reports: #New
