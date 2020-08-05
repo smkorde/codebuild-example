@@ -5,8 +5,9 @@ phases:
    commands:
      - export DEBIAN_FRONTEND=noninteractive
      - apt-get update
+     - apt-get install -y  software-properties-common
      - apt-get update
-     - apt-get install -y php7.4.8
+     - apt-get install -y php7.1
      - apt-get install php-xdebug
      - php -m
      - phpenmod xdebug 
