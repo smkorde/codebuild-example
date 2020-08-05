@@ -44,24 +44,28 @@ phases:
 
          #Enable xdebug - phpunit uses this for code coverage
          phpenmod xdebug
-
+         
          #Install composer
          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
          php composer-setup.php ;
          php -r "unlink('composer-setup.php');" ;
          mv composer.phar /usr/local/bin/composer
+         php -i | grep xdebug
+         
  build:
    commands:
      - echo Build started on `date`
-     - echo Running sonar scanner
      - echo Installing composer deps
-     - composer install --no-progress --no-suggest
+     - composer install
+     
  post_build:
    commands:
+     - service apache2 restart
+     - php -m
      - echo Build completed on `date`
-     
      # Run your tests
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
+     - php -v
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
     # - sonar-scanner
 cache:
