@@ -38,7 +38,7 @@ phases:
                   php7.1-opcache \
                   php7.1-xdebug \
                   php7.1-dom \
-                  #php-xdebug \
+                  php-xdebug \
                   php7.1-curl \
                   unzip
 
@@ -60,8 +60,9 @@ phases:
      
  post_build:
    commands:
-     - service apache2 restart
+     - phpenmod xdebug     
      - php -m
+     - sudo service apache2 restart
      - echo Build completed on `date`
      # Run your tests
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
