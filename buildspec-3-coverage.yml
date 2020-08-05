@@ -11,6 +11,9 @@ phases:
      - apt-get upgrade -y
      - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug
      - phpenmod zip
+     - apt-get install locate
+     - updatedb
+     - locate xdebug.so
      - php -m
      - phpenmod xdebug 
      - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -18,5 +21,7 @@ phases:
      - php -r "unlink('composer-setup.php');" ;
      - mv composer.phar /usr/local/bin/composer
      - php --ini
+     - sed '1 s/^/zend_extension = xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
      - composer install
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
+     
