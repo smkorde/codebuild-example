@@ -62,7 +62,7 @@ phases:
    commands:
      - phpenmod xdebug     
      - php -m
-     - sudo service apache2 restart
+     - sudo systemctl restart apache2
      - echo Build completed on `date`
      # Run your tests
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
