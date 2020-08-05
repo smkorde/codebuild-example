@@ -59,11 +59,11 @@ phases:
      - php -v
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      - sonar-scanner
- reports: #New
-  SurefireReports: # CodeBuild will create a report group called "SurefireReports".
-    files: #Store all of the files
-      - '**/*'
-    base-directory: 'ci/' # Location of the reports  
+reports: #New
+ SurefireReports: # CodeBuild will create a report group called "SurefireReports".
+   files: #Store all of the files
+     - '**/*'
+   base-directory: 'ci/' # Location of the reports  
 cache:
   paths:
     # Debian package caches, so we don't need to keep redownloading debian packages:
