@@ -10,4 +10,6 @@ phases:
      - apt-get update
      - apt-get upgrade -y
      - apt-get install -y php7.2-cli php7.2-zip
+     - apt-get install -y php-pear php7.3-curl php7.3-dev php7.3-mbstring php7.3-zip php7.3-mysql php7.3-xml php7.3-pdo php7.3-pdo-sqlite php7.3-fpm php7.3-gd php7.3-xmlrpc php7.3-opcache
      - phpenmod zip
+     - php -m
