@@ -1,30 +1,73 @@
 version: 0.2
+env:
+  parameter-store:
+    SONARQUBE_TOKEN: "SONARQUBE_TOKEN"
+    SONARQUBE_ENDPOINT: "SONARQUBE_ENDPOINT"
 phases:
 
  install:
    commands:
-     - rm -f /usr/local/bin/php*
-     - rm -f /usr/local/bin/phar*
-     - rm -f /usr/local/bin/pear*
-     - rm -f /usr/local/bin/pecl*
-     - apt-get update
-     - apt-get upgrade -y
-     - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug php7.2-phpdbg
-     - phpenmod zip
-     #- apt-get install locate
-     #- updatedb
-     #- locate xdebug.so
-     #- phpenmod xdebug 
-     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-     - php composer-setup.php ;
-     - php -r "unlink('composer-setup.php');" ;
-     - mv composer.phar /usr/local/bin/composer
-     - php --ini
-     #- sed '1 s/^/zend_extension = \/usr\/lib\/php\/20170718\/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
-     - php -v
-     - php -m
-     #- composer require composer/xdebug-handler
+     - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+     - unzip sonar-scanner-cli-3.3.0.1492-linux.zip
+     - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+     - echo $PATH
+          #This file configures apt to remove it's cache after installs - we want this cache, so we remove this config
+     - rm -f /etc/apt/apt.conf.d/docker-clean
+
+     #Install required packages
+     - |
+         export DEBIAN_FRONTEND=noninteractive
+         #Install php7.1
+         apt-get update
+         apt-get install -y  software-properties-common
+         LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
+         apt-get update
+         # Install PHP 7.1.  The ondrej/php repository also contains other versions of php, try just changing the version number
+         apt-get install -y php7.1\
+                  php7.1-ldap \
+                  php7.1-xml \
+                  php7.1-xmlrpc \
+                  php7.1-zip \
+                  php7.1-mysql \
+                  php7.1-mbstring \
+                  php7.1-mcrypt \
+                  php7.1-gd \
+                  php7.1-readline \
+                  php7.1-opcache \
+                  php7.1-phpdbg \
+                  php7.1-dom \
+                  #php-xdebug \
+                  php7.1-curl \
+                  unzip
+
+         #Install composer
+         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+         php composer-setup.php ;
+         php -r "unlink('composer-setup.php');" ;
+         mv composer.phar /usr/local/bin/composer
+         
+ build:
+   commands:
+     - echo Build started on `date`
+     - echo Installing composer deps
      - composer install
+ post_build:
+   commands:
+     - echo Build completed on `date`
+     # Run your tests
      - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
-     #- ./vendor/bin/phpunit --verbose -c phpunit.xml
-     
+     - php -v
+     - aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
+     - sonar-scanner
+cache:
+  paths:
+    # Debian package caches, so we don't need to keep redownloading debian packages:
+    - /var/cache/apt/**/*
+    - /var/lib/apt/lists/**/*
+
+    # Composer cache:
+    - /root/.composer/**/*
+
+    # Node modules, if you need nodejs based tools like webpack during your build
+    - /root/.npm/**/*
+    - /usr/lib/node_modules/**/*
