@@ -51,6 +51,7 @@ phases:
      - echo Build started on `date`
      - echo Installing composer deps
      - composer install
+     - composer require --dev phpstan/phpstan
  post_build:
    commands:
      - echo Build completed on `date`
