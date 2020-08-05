@@ -9,21 +9,22 @@ phases:
      - rm -f /usr/local/bin/pecl*
      - apt-get update
      - apt-get upgrade -y
-     - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug
+     - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug php7.2-phpdbg
      - phpenmod zip
-     - apt-get install locate
-     - updatedb
-     - locate xdebug.so
-     - phpenmod xdebug 
+     #- apt-get install locate
+     #- updatedb
+     #- locate xdebug.so
+     #- phpenmod xdebug 
      - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
      - php composer-setup.php ;
      - php -r "unlink('composer-setup.php');" ;
      - mv composer.phar /usr/local/bin/composer
      - php --ini
-     - sed '1 s/^/zend_extension = \/usr\/lib\/php\/20170718\/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
+     #- sed '1 s/^/zend_extension = \/usr\/lib\/php\/20170718\/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
      - php -v
      - php -m
-     - composer require composer/xdebug-handler
+     #- composer require composer/xdebug-handler
      - composer install
-     - ./vendor/bin/phpunit --verbose -c phpunit.xml
+     - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
+     #- ./vendor/bin/phpunit --verbose -c phpunit.xml
      
