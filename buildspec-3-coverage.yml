@@ -3,6 +3,7 @@ phases:
 
  install:
    commands:
+     - sed '1 s/^/zend_extension = \/usr\/lib\/php\/20170718\/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
      - rm -f /usr/local/bin/php*
      - rm -f /usr/local/bin/phar*
      - rm -f /usr/local/bin/pear*
