@@ -52,7 +52,7 @@ phases:
          php -r "unlink('composer-setup.php');" ;
          mv composer.phar /usr/local/bin/composer
          locate -y xdebug.so
-         
+         php --ini
  build:
    commands:
      - echo Build started on `date`
