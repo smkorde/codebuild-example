@@ -29,4 +29,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+    function fun($a) {
+  $i = 10;
+  return $i + $a;
+  $i++;             // dead code
+}
 }
