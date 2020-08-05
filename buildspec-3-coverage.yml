@@ -57,7 +57,7 @@ phases:
      # Run your tests
      - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
      - php -v
-     - aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
+     #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      - sonar-scanner
  reports: #New
   SurefireReports: # CodeBuild will create a report group called "SurefireReports".
