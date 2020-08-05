@@ -1,83 +1,19 @@
 version: 0.2
-env:
-  parameter-store:
-    SONARQUBE_TOKEN: "SONARQUBE_TOKEN"
-    SONARQUBE_ENDPOINT: "SONARQUBE_ENDPOINT"
 phases:
 
  install:
    commands:
-     #- wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
-     #- unzip sonar-scanner-cli-3.3.0.1492-linux.zip
-     #- export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
-     #- echo $PATH
-          #This file configures apt to remove it's cache after installs - we want this cache, so we remove this config
-     #- rm -f /etc/apt/apt.conf.d/docker-clean
-
      #Install required packages
      - |
          export DEBIAN_FRONTEND=noninteractive
-
-         #Install php7.1
+         #Install php7.4.8
          apt-get update
          apt-get install -y  software-properties-common
-         apt-get install -y locate
          LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
          apt-get update
-          
-         # Install PHP 7.1.  The ondrej/php repository also contains other versions of php, try just changing the version number
-         apt-get install -y php7.1\
-                  php7.1-ldap \
-                  php7.1-xml \
-                  php7.1-xmlrpc \
-                  php7.1-zip \
-                  php7.1-mysql \
-                  php7.1-mbstring \
-                  php7.1-mcrypt \
-                  php7.1-gd \
-                  php7.1-readline \
-                  php7.1-opcache \
-                  php7.1-xdebug \
-                  php7.1-dom \
-                  php-xdebug \
-                  php7.1-curl \
-                  unzip
-
-         #Enable xdebug - phpunit uses this for code coverage
-         phpenmod xdebug
-         
-         #Install composer
-         php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-         php composer-setup.php ;
-         php -r "unlink('composer-setup.php');" ;
-         mv composer.phar /usr/local/bin/composer
-         locate -y xdebug.so
-         php --ini
- build:
-   commands:
-     - echo Build started on `date`
-     - echo Installing composer deps
-     #- composer install
-     
- post_build:
-   commands:
-     - php -m
-     - service apache2 restart
-     - echo Build completed on `date`
-     # Run your tests
-     - ./vendor/bin/phpunit --verbose -c phpunit.xml
-     - php -v
-     #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
-    # - sonar-scanner
-cache:
-  paths:
-    # Debian package caches, so we don't need to keep redownloading debian packages:
-    - /var/cache/apt/**/*
-    - /var/lib/apt/lists/**/*
-
-    # Composer cache:
-    - /root/.composer/**/*
-
-    # Node modules, if you need nodejs based tools like webpack during your build
-    - /root/.npm/**/*
-    - /usr/lib/node_modules/**/*
+         apt-get install -y php7.4.8
+         apt-get install php-xdebug
+    
+    #Enable xdebug - phpunit uses this for code coverage
+         php -m
+         phpenmod xdebug 
