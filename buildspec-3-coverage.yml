@@ -21,7 +21,7 @@ phases:
      - php -r "unlink('composer-setup.php');" ;
      - mv composer.phar /usr/local/bin/composer
      - php --ini
-     - sed '1 s/^/zend_extension = xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
+     - sed '1 s/^/zend_extension = /usr/lib/php/20170718/xdebug.so\n/' /root/.phpenv/versions/7.3.13/etc/php.ini
      - composer install
      - ./vendor/bin/phpunit --verbose -c phpunit.xml
      
