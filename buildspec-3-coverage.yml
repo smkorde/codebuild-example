@@ -9,7 +9,7 @@ phases:
      - rm -f /usr/local/bin/pecl*
      #- apt-get update
      #- apt-get upgrade -y
-     - apt-get install -y php7.3-cli php7.3-zip php7.3-xdebug
+     - apt-get install -y php7.2-cli php7.2-zip php7.2-xdebug
      - phpenmod zip
      - apt-get install locate
      - updatedb
