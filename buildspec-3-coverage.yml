@@ -27,7 +27,7 @@ phases:
          LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
          apt-get update
          apt-get install docker
-         #apt-get install awscli
+         apt-get install awscli
          # Install PHP 7.1.  The ondrej/php repository also contains other versions of php, try just changing the version number
          apt-get install -y php7.1\
                   php7.1-ldap \
@@ -75,6 +75,8 @@ phases:
      #- ./vendor/bin/phpstan analyse app --level 5 --error-format=junit --no-progress > ci/quality_check.xml
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
      #- sonar-scanner
+     - aws ecr get-login --region $AWS_DEFAULT_REGION
+     - docker login -u AWS -p <password> <aws_account_id>.dkr.ecr.<region>.amazonaws.com
      - echo Pushing the Docker image...
      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 #reports: #New
