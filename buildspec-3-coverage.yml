@@ -3,6 +3,10 @@ env:
   parameter-store:
     SONARQUBE_TOKEN: "SONARQUBE_TOKEN"
     SONARQUBE_ENDPOINT: "SONARQUBE_ENDPOINT"
+    DEFAULT_REGION: "DEFAULT_REGION"
+    IMAGE_REPO_NAME: "IMAGE_REPO_NAME"
+    IMAGE_TAG: "IMAGE_TAG"
+    AWS_ACCOUNT_ID: "ACCOUNT_ID"
 phases:
 
  install:
@@ -22,6 +26,8 @@ phases:
          apt-get install -y  software-properties-common
          LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
          apt-get update
+         apt-get install docker
+         #apt-get install awscli
          # Install PHP 7.1.  The ondrej/php repository also contains other versions of php, try just changing the version number
          apt-get install -y php7.1\
                   php7.1-ldap \
@@ -45,26 +51,36 @@ phases:
          php composer-setup.php ;
          php -r "unlink('composer-setup.php');" ;
          mv composer.phar /usr/local/bin/composer
-         
+ 
+ #pre_build:
+  #  commands:
+   #   - echo Logging in to Amazon ECR...
+     # - aws ecr get-login --no-include-email --region $DEFAULT_REGION        
+ 
  build:
    commands:
      - echo Build started on `date`
      - echo Installing composer deps
      - composer install
      - composer require --dev phpstan/phpstan
+     - echo Building the Docker image...          
+     - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+     - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG  
  post_build:
    commands:
      - echo Build completed on `date`
      # Run your tests
-     - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
+     #- phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
      #- ./vendor/bin/phpstan analyse app --level 5 --error-format=junit --no-progress > ci/quality_check.xml
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
-     - sonar-scanner
-reports: #New
- UnitTestReports: # CodeBuild will create a report group called "SurefireReports".
-   files: #Store all of the files
-     - '**/*'
-   base-directory: 'ci/' # Location of the reports  
+     #- sonar-scanner
+     - echo Pushing the Docker image...
+     - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+#reports: #New
+ #UnitTestReports: # CodeBuild will create a report group called "SurefireReports".
+  # files: #Store all of the files
+   #  - '**/*'
+   #base-directory: 'ci/' # Location of the reports  
 cache:
   paths:
     # Debian package caches, so we don't need to keep redownloading debian packages:
