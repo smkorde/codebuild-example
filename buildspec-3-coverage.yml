@@ -51,7 +51,7 @@ phases:
          php composer-setup.php ;
          php -r "unlink('composer-setup.php');" ;
          mv composer.phar /usr/local/bin/composer
-         service docker start
+         
  
  #pre_build:
   #  commands:
