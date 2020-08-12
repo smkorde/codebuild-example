@@ -77,7 +77,7 @@ phases:
      #- sonar-scanner
      - echo Pushing the Docker image...
      - docker push $IMAGE_URI
-     - echo [{"name":"PHP","imageUri":"$IMAGE_URI"}] > imagedefinitions.json
+     - echo '[{"name":"PHP","imageUri":"'$IMAGE_URI'"}]' > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
   
