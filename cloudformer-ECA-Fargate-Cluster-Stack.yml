@@ -1,0 +1,398 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "zonelocal": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": "local.",
+        "HostedZoneConfig": {
+          "Comment": "Created by AWS Cloud Map namespace with ARN arn:aws:servicediscovery:us-east-1:199370614730:namespace/ns-x3ln5ehuesavzo3k"
+        }
+      }
+    },
+    "dnsphplocal87065515dc2d40bcbabb7145caf9b003": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonelocal"
+        },
+        "RecordSets": [
+          {
+            "Name": "php.local.",
+            "SetIdentifier": "87065515-dc2d-40bc-babb-7145caf9b003",
+            "Type": "A",
+            "TTL": "60",
+            "HealthCheckId": "83f6e38b-13db-466d-be59-22c70c21233b",
+            "ResourceRecords": [
+              "10.0.0.227"
+            ]
+          }
+        ]
+      }
+    },
+    "dnsphplocald5d176414a9e453b912dad3dc6a35fe0": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonelocal"
+        },
+        "RecordSets": [
+          {
+            "Name": "php.local.",
+            "SetIdentifier": "d5d17641-4a9e-453b-912d-ad3dc6a35fe0",
+            "Type": "A",
+            "TTL": "60",
+            "HealthCheckId": "07924dce-a87a-4a49-8730-cf072803240d",
+            "ResourceRecords": [
+              "10.0.1.170"
+            ]
+          }
+        ]
+      }
+    },
+    "vpc0d498f008e82f3663": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true"
+      }
+    },
+    "subnet0a910a80a359e56e8": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/24",
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PHP-FARGATE/Public"
+          }
+        ]
+      }
+    },
+    "subnet0c822146616f03146": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.1.0/24",
+        "AvailabilityZone": "us-east-1b",
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PHP-FARGATE/Public"
+          }
+        ]
+      }
+    },
+    "igw072761940884ac461": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },
+    "igw09214072": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },
+    "dopte8a77892": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "DomainName": "ec2.internal",
+        "DomainNameServers": [
+          "AmazonProvidedDNS"
+        ]
+      }
+    },
+    "acl0f01fb0ab0c8bdb92": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        }
+      }
+    },
+    "rtb13c9706d": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": "vpc-5480b32e"
+      }
+    },
+    "rtb0c91480ad623660c3": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        }
+      }
+    },
+    "rtb09eae0bd48eb8e25f": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        }
+      }
+    },
+    "s3cftemplates1jwudn5f1mkghuseast1": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "s3codebuildexamplecache": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "s3codebuildexamplecoveragereport": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicRead",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "s3codepipelineuseast14911690330": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "sgfargateclusterstackWebServerSecurityGroupH4GHIJJZ4F38": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable HTTPS access via port 443",
+        "VpcId": "vpc-5480b32e"
+      }
+    },
+    "dbsgdefault": {
+      "Type": "AWS::RDS::DBSecurityGroup",
+      "Properties": {
+        "GroupDescription": "default"
+      }
+    },
+    "s3policycodepipelineuseast14911690330": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "s3codepipelineuseast14911690330"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Id": "SSEAndSSLPolicy",
+          "Statement": [
+            {
+              "Sid": "DenyUnEncryptedObjectUploads",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:PutObject",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    "codepipeline-us-east-",
+                    "1-4911690330/*"
+                  ]
+                ]
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "s3:x-amz-server-side-encryption": "aws:kms"
+                }
+              }
+            },
+            {
+              "Sid": "DenyInsecureConnections",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    "codepipeline-us-east-",
+                    "1-4911690330/*"
+                  ]
+                ]
+              },
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "acl1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl0f01fb0ab0c8bdb92"
+        }
+      }
+    },
+    "acl2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl0f01fb0ab0c8bdb92"
+        }
+      }
+    },
+    "subnetacl1": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl0f01fb0ab0c8bdb92"
+        },
+        "SubnetId": {
+          "Ref": "subnet0c822146616f03146"
+        }
+      }
+    },
+    "subnetacl2": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl0f01fb0ab0c8bdb92"
+        },
+        "SubnetId": {
+          "Ref": "subnet0a910a80a359e56e8"
+        }
+      }
+    },
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw072761940884ac461"
+        }
+      }
+    },
+    "gw2": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": "vpc-5480b32e",
+        "InternetGatewayId": {
+          "Ref": "igw09214072"
+        }
+      }
+    },
+    "subnetroute2": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb0c91480ad623660c3"
+        },
+        "SubnetId": {
+          "Ref": "subnet0a910a80a359e56e8"
+        }
+      }
+    },
+    "subnetroute3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb0c91480ad623660c3"
+        },
+        "SubnetId": {
+          "Ref": "subnet0c822146616f03146"
+        }
+      }
+    },
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb13c9706d"
+        },
+        "GatewayId": {
+          "Ref": "igw09214072"
+        }
+      },
+      "DependsOn": "gw2"
+    },
+    "route2": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb0c91480ad623660c3"
+        },
+        "GatewayId": {
+          "Ref": "igw072761940884ac461"
+        }
+      },
+      "DependsOn": "gw1"
+    },
+    "dchpassoc1": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc0d498f008e82f3663"
+        },
+        "DhcpOptionsId": {
+          "Ref": "dopte8a77892"
+        }
+      }
+    },
+    "ingress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgfargateclusterstackWebServerSecurityGroupH4GHIJJZ4F38"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgfargateclusterstackWebServerSecurityGroupH4GHIJJZ4F38"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    }
+  },
+  "Description": "AWS Cloud Formation Template for ECA Fargate Cluster"
+}
