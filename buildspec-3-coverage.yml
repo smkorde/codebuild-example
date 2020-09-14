@@ -71,10 +71,10 @@ phases:
    commands:
      - echo Build completed on `date`
      # Run your tests
-     #- phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
+     - phpdbg -qrr ./vendor/bin/phpunit -c phpunit.xml
      #- ./vendor/bin/phpstan analyse app --level 5 --error-format=junit --no-progress > ci/quality_check.xml
      #- aws s3 sync --delete  coverage/ "s3://codebuild-example-coverage-report/coverage"
-     #- sonar-scanner
+     - sonar-scanner
      - echo Pushing the Docker image...
      - docker push $IMAGE_URI
      - echo '[{"name":"PHP","imageUri":"'$IMAGE_URI'"}]' > imagedefinitions.json
